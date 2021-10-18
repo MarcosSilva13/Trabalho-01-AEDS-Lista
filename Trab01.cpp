@@ -15,7 +15,7 @@ typedef struct
 {
   TChave codigo; // codigo do projeto
   char nome[30]; // nome do projeto
-  int horas;     // numero de horas trabalhas no projeto
+  int horas;     // numero de horas trabalhadas no projeto
 } TProjeto;
 
 typedef struct
@@ -50,7 +50,7 @@ void menu();
 //TADS Lista Encadeada
 void CriaListaVaziaEncadeada(TListaEncadeada *listaE);
 void InsereEncadeada(TFuncionario fun, TListaEncadeada *listaE);
-//int VerificaListaVazia -- MARCOS
+int VerificaListaVaziaE(TListaEncadeada listaE); 
 //int Pesquisa
 //void ConsultaFuncionario
 //void ExcluiFuncionario
@@ -67,13 +67,11 @@ void CadastraFuncionario(TListaEncadeada *listaE); //cadastro de funcionarios
 void CadastraProjetos(TListaSequencial &listaS);   //cadastro de projetos
 void ImprimiLista(TListaEncadeada listaE);
 
-
 TListaEncadeada listaE;
 TListaSequencial listaS;
 
 int main()
 {
-  
   UINT CPAGE_UTF8 = 65001;
   UINT CPAGE_DEFAULT = GetConsoleOutputCP();
   SetConsoleOutputCP(CPAGE_UTF8);
@@ -135,6 +133,10 @@ void CriaListaVaziaEncadeada(TListaEncadeada *listaE){
     listaE->Primeiro->prox = NULL;
 }
 
+int VerificaListaVaziaE(TListaEncadeada listaE){
+    return(listaE.Primeiro == listaE.Ultimo);
+}
+
 void InsereEncadeada(TFuncionario fun, TListaEncadeada *listaE){
     listaE->Ultimo->prox = new TCelula;
     listaE->Ultimo = listaE->Ultimo->prox;
@@ -172,23 +174,28 @@ void CadastraFuncionario(TListaEncadeada *listaE){
     gets (fun.endereco);
     cout << "Numero de Dependentes: ";
     cin >> fun.dependentes;
-
+    
     do {
       cout << "Adicionar projetos para esse funcionario ? 1-SIM 2-NÃO\n";
       cin >> op;
+
       if(op == 1){
         CadastraProjetos(listaS);
       }
+
     }while(op != 2);
 
     //inserir na lista aqui...
     InsereEncadeada(fun, listaE);
-    
+
+    cout << "\nFuncionário cadastrado com sucesso!\n\n";
+    Sleep(1000);
+    system("cls");   
 }
 
 void CadastraProjetos(TListaSequencial &listaS){
     TProjeto proj;
-    TFuncionario fun;
+    //TFuncionario fun;
     cout << "*******************************************\n";
     cout << "*        CADASTRO DE PROJETO              *\n";
     cout << "*******************************************\n\n";
@@ -201,7 +208,9 @@ void CadastraProjetos(TListaSequencial &listaS){
     cin >> proj.horas;
     
     InsereSequencial(proj, listaS);
-    
+
+    cout << "\nProjeto cadastrado com sucesso!\n\n";
+    Sleep(1000);  
 }
 
 void ImprimiLista(TListaEncadeada listaE){
@@ -214,8 +223,8 @@ void ImprimiLista(TListaEncadeada listaE){
         cout << "Nome: " << aux->item.nome << "\n";
         cout << "Endereço: " << aux->item.endereco << "\n";
         cout << "Dependentes: " << aux->item.dependentes << "\n";
+        
         cout << "PROJETOS\n";
-        //cout << "Projeto nome: " << aux->item.projetos.item->codigo << "\n";
         for(int i = listaS.primeiro; i < listaS.ultimo; i++){ //NÃO É ISSO...
         cout << "Projeto nome: " << listaS.item[i].nome << "\n";
         cout << "Codigo: " << listaS.item[i].codigo << "\n";
