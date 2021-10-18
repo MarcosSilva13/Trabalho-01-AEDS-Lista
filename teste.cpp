@@ -8,7 +8,7 @@ int main() {
   UINT CPAGE_DEFAULT = GetConsoleOutputCP();
   SetConsoleOutputCP(CPAGE_UTF8);
  
-  cout << "Testando" << endl;
+  cout << "Teste" << endl;
  
   cout << endl << endl;
   system("pause");
