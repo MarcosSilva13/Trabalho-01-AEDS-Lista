@@ -177,6 +177,7 @@ int VerificaListaVaziaS(TListaSequencial listaS){
         return 0;
     }
 }
+// acho que é isso mesmo
 
 void InsereSequencial(TProjeto proj, TListaSequencial &listaS){
     if(listaS.ultimo == MAXTAM){
