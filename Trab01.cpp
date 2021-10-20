@@ -60,7 +60,7 @@ void ApagaFuncionario(TApontador x, TListaEncadeada *listaE, TFuncionario *fun);
 //TADS Lista Sequencial
 void CriaListaVaziaSequencial(TListaSequencial &listaS);
 void InsereSequencial(TProjeto proj, TListaSequencial &listaS);
-//int VerificaListaVazia -- EDUARDO
+int VerificaListaVazia(TListaEncadeada listaS);
 //???? ExcluiProjeto
 
 //ações 
@@ -168,6 +168,14 @@ void InsereEncadeada(TFuncionario fun, TListaEncadeada *listaE){
 void CriaListaVaziaSequencial(TListaSequencial &listaS){
     listaS.primeiro = 0;
     listaS.ultimo = listaS.primeiro;
+}
+
+int VerificaListaVaziaS(TListaSequencial listaS){
+    if(listaS.ultimo == 0){
+        return 1;
+    }else{
+        return 0;
+    }
 }
 
 void InsereSequencial(TProjeto proj, TListaSequencial &listaS){
