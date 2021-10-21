@@ -6,7 +6,7 @@
 using namespace std;
 
 #define MAXTAM 5 //numero maximo de projetos
-#define INICIO 1
+#define INICIO 0
 
 typedef int TChave;
 
@@ -60,7 +60,7 @@ void ApagaFuncionario(TApontador x, TListaEncadeada *listaE, TFuncionario *fun);
 //TADS Lista Sequencial
 void CriaListaVaziaSequencial(TListaSequencial &listaS);
 void InsereSequencial(TProjeto proj, TListaSequencial &listaS);
-int VerificaListaVazia(TListaEncadeada listaS);
+int VerificaListaVaziaS(TListaSequencial listaS);
 //???? ExcluiProjeto
 
 //ações 
@@ -166,7 +166,7 @@ void InsereEncadeada(TFuncionario fun, TListaEncadeada *listaE){
 }
 
 void CriaListaVaziaSequencial(TListaSequencial &listaS){
-    listaS.primeiro = 0;
+    listaS.primeiro = INICIO;
     listaS.ultimo = listaS.primeiro;
 }
 
@@ -284,7 +284,6 @@ void CadastraProjetos(TListaSequencial &listaS, TListaEncadeada *listaE){
         cout << "Horas trabalhadas: ";
         cin >> proj.horas;
         
-        //TA GUARDANDO SEPARADO MAS AINDA DANDO UNS BO DOIDO PORQ PRA OUTRO APARECE ESPAÇO VAZIO
         p->prox->item.projetos.item[listaS.ultimo] = proj;
       
         //inserindo na lista sequencial os projetos
@@ -304,7 +303,9 @@ void ExcluiFuncionario(TListaEncadeada *listaE, TListaSequencial &listaS) {
     int cont = 0;
 
     while (x->prox != NULL) {
-        //comparar se tem projeto
+        
+        //COMPARAR SE TEM PROJETO
+          
             ApagaFuncionario(x, listaE, &fun);
             cont++;
         
