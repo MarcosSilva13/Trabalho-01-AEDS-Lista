@@ -51,19 +51,16 @@ void InsereEncadeada(TFuncionario fun, TListaEncadeada *listaE);
 int VerificaListaVaziaE(TListaEncadeada listaE); 
 int Pesquisa(TChave cod, TListaEncadeada listaE, TApontador *p);
 
-//void ListaFuncionario NÃO VAI PRECISAR EU ACHO
-
 //TADS Lista Sequencial
 void CriaListaVaziaSequencial(TListaSequencial &listaS);
-void InsereSequencial(TProjeto proj, TListaSequencial &listaS);
+void InsereSequencial(TProjeto proj, TListaSequencial *listaS);
 int VerificaListaVaziaS(TListaSequencial listaS);
-//???? ExcluiProjeto 
 
 //ações 
 void CadastraFuncionario(TListaEncadeada *listaE); //cadastro de funcionarios
 void ConsultaFuncionario(TListaEncadeada *listaE, TListaSequencial listaS);  //consulta de funcionarios
-void ExcluiFuncionario(TListaEncadeada *listaE, TListaSequencial &listaS);
-void ApagaFuncionario(TApontador x, TListaEncadeada *listaE, TFuncionario *fun);
-void CadastraProjetos(TListaSequencial &listaS, TListaEncadeada *listaE); //cadastro de projetos
+void ExcluiFuncionario(TListaEncadeada *listaE); //exclui funcionarios
+void ApagaFuncionario(TApontador x, TListaEncadeada *listaE, TFuncionario *fun); 
+void CadastraProjetos(TListaEncadeada *listaE); //cadastro de projetos
 
 #endif

@@ -18,9 +18,6 @@ int main()
   CriaListaVaziaEncadeada(&listaE);
   CriaListaVaziaSequencial(listaS);
 
-  //NÃO ESQUECER QUE TEM QUE GRAVAR NO ARQUIVO AINDA...
-  //A LISTA DE PROJETO PARECE NAO TA CRIANDO UMA LISTA PRA CADA FUNCIONARIO NAO...
-
   int opcao;
 
   do
@@ -32,17 +29,15 @@ int main()
     switch(opcao) {
         case 1:
             CadastraFuncionario(&listaE);
-            
             break;
         case 2:
-            CadastraProjetos(listaS, &listaE);
+            CadastraProjetos(&listaE);
             break;
         case 3:
             //função
-            
             break;
         case 4:
-            ExcluiFuncionario(&listaE, listaS);
+            ExcluiFuncionario(&listaE);
             break;
         case 5:
             ConsultaFuncionario(&listaE, listaS);

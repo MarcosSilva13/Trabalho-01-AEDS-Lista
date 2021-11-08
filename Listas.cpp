@@ -60,19 +60,18 @@ int VerificaListaVaziaS(TListaSequencial listaS){
     }
 }
 
-void InsereSequencial(TProjeto proj, TListaSequencial &listaS){
-    if(listaS.ultimo == MAXTAM){
+void InsereSequencial(TProjeto proj, TListaSequencial *listaS){
+    if(listaS->ultimo == MAXTAM){
         cout << "Lista Cheia!\n";
         Sleep(1000);
     } else {
-        listaS.item[listaS.ultimo] = proj;
-        listaS.ultimo++;
+        listaS->item[listaS->ultimo] = proj;
+        listaS->ultimo++;
     }
 }
 
 void CadastraFuncionario(TListaEncadeada *listaE){
     TFuncionario fun;
-    int op;
     cout << "*******************************************\n";
     cout << "*        CADASTRO DE FUNCIONÁRIO          *\n";
     cout << "*******************************************\n\n";
@@ -83,9 +82,13 @@ void CadastraFuncionario(TListaEncadeada *listaE){
     gets(fun.nome);
     cout << "Endereço: ";
     gets (fun.endereco);
-    cout << "Numero de Dependentes: ";
-    cin >> fun.dependentes;
-
+    
+    while ((cout << "Número de Dependentes: ") && !(cin >> fun.dependentes)) {
+            cout << "Você inseriu um valor nao numerico.\n"; // Exibe mensagem em caso de divergência encontrada
+            cin.clear(); // Apaga o sinalizador de erro cin para que futuras operações funcionem corretamente
+            cin.ignore(); // Pula para a próxima linha ignorando caracteres para o buffer de entrada
+}
+    
     //inserindo na lista encadeada os funcionarios
     InsereEncadeada(fun, listaE);
 
@@ -102,7 +105,7 @@ int Pesquisa(TChave cod, TListaEncadeada listaE, TApontador *p){
           return 1;
       } else {
         aux = aux->prox;
-        *p = aux;
+          *p = aux;
       }
     }
     return 0;
@@ -127,7 +130,7 @@ void ConsultaFuncionario(TListaEncadeada *listaE, TListaSequencial listaS){
         cout << "Endereço: " << p->prox->item.endereco << "\n";
         cout << "Dependentes: " << p->prox->item.dependentes << endl;
         
-        cout << "PROJETOS\n";  //quando adiciona outro cara ele mostra com lixo de memoria parece
+        cout << "PROJETOS\n";  //quando adiciona outro funcionario mostra com lixo de memoria parece
         for(int i = listaS.primeiro; i < listaS.ultimo; i++){
             cout << "Codigo: " << p->prox->item.projetos.item[i].codigo << "\n";
             cout << "Projeto nome: " << p->prox->item.projetos.item[i].nome << "\n";
@@ -141,7 +144,7 @@ void ConsultaFuncionario(TListaEncadeada *listaE, TListaSequencial listaS){
     system("cls");
 }
 
-void CadastraProjetos(TListaSequencial &listaS, TListaEncadeada *listaE){
+void CadastraProjetos(TListaEncadeada *listaE){
     TProjeto proj;
     TApontador p;
     TChave cod;
@@ -164,11 +167,9 @@ void CadastraProjetos(TListaSequencial &listaS, TListaEncadeada *listaE){
         gets(proj.nome);
         cout << "Horas trabalhadas: ";
         cin >> proj.horas;
-        
-        p->prox->item.projetos.item[listaS.ultimo] = proj;
       
         //inserindo na lista sequencial os projetos
-        InsereSequencial(proj, listaS);
+        InsereSequencial(proj, &(p->prox->item.projetos));
 
         cout << "\nProjeto cadastrado com sucesso!\n\n";
         Sleep(1000);  
@@ -177,9 +178,8 @@ void CadastraProjetos(TListaSequencial &listaS, TListaEncadeada *listaE){
     }
 }
 
-void ExcluiFuncionario(TListaEncadeada *listaE, TListaSequencial &listaS) {
+void ExcluiFuncionario(TListaEncadeada *listaE) {
     TFuncionario fun;
-    //TProjeto proj;
     TApontador x = listaE->Primeiro;
     int cont = 0;
 
