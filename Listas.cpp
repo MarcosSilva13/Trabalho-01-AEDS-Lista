@@ -47,9 +47,9 @@ void InsereEncadeada(TFuncionario fun, TListaEncadeada *listaE){
     listaE->Ultimo->prox = NULL;
 }
 
-void CriaListaVaziaSequencial(TListaSequencial &listaS){
-    listaS.primeiro = INICIO;
-    listaS.ultimo = listaS.primeiro;
+void CriaListaVaziaSequencial(TListaSequencial *listaS){
+    listaS->primeiro = INICIO;
+    listaS->ultimo = listaS->primeiro;
 }
 
 int VerificaListaVaziaS(TListaSequencial listaS){
@@ -72,11 +72,23 @@ void InsereSequencial(TProjeto proj, TListaSequencial *listaS){
 
 void CadastraFuncionario(TListaEncadeada *listaE){
     TFuncionario fun;
+    TApontador y = listaE->Primeiro;
     cout << "*******************************************\n";
     cout << "*        CADASTRO DE FUNCIONÁRIO          *\n";
     cout << "*******************************************\n\n";
     cout << "Codigo: ";
     cin >> fun.numero;
+
+    //verificando se ja existe codigo igual dos funcionarios
+    while(y->prox != NULL){
+        if(y->prox->item.numero == fun.numero){
+            cout << "Codigo ja existe, Digite outro: ";
+            cin >> fun.numero;
+            y = listaE->Primeiro;
+        } else {
+            y = y->prox;
+        }
+    }
     cin.ignore();
     cout << "Nome: ";
     gets(fun.nome);
@@ -88,6 +100,8 @@ void CadastraFuncionario(TListaEncadeada *listaE){
             cin.clear(); // Apaga o sinalizador de erro cin para que futuras operações funcionem corretamente
             cin.ignore(); // Pula para a próxima linha ignorando caracteres para o buffer de entrada
 }
+    
+    CriaListaVaziaSequencial(&fun.projetos); //criando a lista de projetos
     
     //inserindo na lista encadeada os funcionarios
     InsereEncadeada(fun, listaE);
@@ -111,7 +125,7 @@ int Pesquisa(TChave cod, TListaEncadeada listaE, TApontador *p){
     return 0;
 }
 
-void ConsultaFuncionario(TListaEncadeada *listaE, TListaSequencial listaS){
+void ConsultaFuncionario(TListaEncadeada *listaE){
     TChave cod;
     TApontador p;
     int ret;
@@ -130,12 +144,9 @@ void ConsultaFuncionario(TListaEncadeada *listaE, TListaSequencial listaS){
         cout << "Endereço: " << p->prox->item.endereco << "\n";
         cout << "Dependentes: " << p->prox->item.dependentes << endl;
         
-        cout << "PROJETOS\n";  //quando adiciona outro funcionario mostra com lixo de memoria parece
-        for(int i = listaS.primeiro; i < listaS.ultimo; i++){
-            cout << "Codigo: " << p->prox->item.projetos.item[i].codigo << "\n";
-            cout << "Projeto nome: " << p->prox->item.projetos.item[i].nome << "\n";
-            cout << "Horas trabalhadas: " << p->prox->item.projetos.item[i].horas << "\n";
-        }
+        cout << "\nPROJETOS do funcionario:\n";  
+        ImprimeProjetos(p->prox->item.projetos);
+
     } else {
         cout << "\nFuncionário não encontrado.\n\n";
     }
@@ -148,48 +159,64 @@ void CadastraProjetos(TListaEncadeada *listaE){
     TProjeto proj;
     TApontador p;
     TChave cod;
-    //TFuncionario fun;
+    int ret, ret_proj;
+
     cout << "Informe o codigo do funcionario: ";
     cin >> cod;
 
-    int ret;
-
     ret = Pesquisa(cod, *listaE, &p);
-  
-    if(ret == 1){
-        cout << "*******************************************\n";
-        cout << "*        CADASTRO DE PROJETO              *\n";
-        cout << "*******************************************\n\n";
-        cout << "Codigo: ";
-        cin >> proj.codigo;
-        cin.ignore();
-        cout << "Nome do projeto: ";
-        gets(proj.nome);
-        cout << "Horas trabalhadas: ";
-        cin >> proj.horas;
-      
-        //inserindo na lista sequencial os projetos
-        InsereSequencial(proj, &(p->prox->item.projetos));
 
-        cout << "\nProjeto cadastrado com sucesso!\n\n";
-        Sleep(1000);  
+    ret_proj = QuantidadeProjetos(p->prox->item.projetos);
+
+    if(ret_proj == MAXTAM){
+        cout << "\nO funcionario só pode ter no máximo 5 projetos\n";
     } else {
-        cout << "\nFuncionário não encontrado.\n\n";
+        if(ret == 1){
+            DadosFuncionario(cod, listaE); //exibe os dados do funcionario e seus projetos
+
+            cout << "*******************************************\n";
+            cout << "*        CADASTRO DE PROJETO              *\n";
+            cout << "*******************************************\n\n";
+            cout << "Codigo: ";
+            cin >> proj.codigo;
+            cin.ignore();
+            cout << "Nome do projeto: ";
+            gets(proj.nome);
+
+            while((cout << "Horas trabalhadas: ") && !(cin >> proj.horas)){
+                cout << "Você inseriu um valor nao numerico.\n"; // Exibe mensagem em caso de divergência encontrada
+                cin.clear(); // Apaga o sinalizador de erro cin para que futuras operações funcionem corretamente
+                cin.ignore(); // Pula para a próxima linha ignorando caracteres para o buffer de entrada
+            }
+
+            //inserindo na lista sequencial os projetos
+            InsereSequencial(proj, &(p->prox->item.projetos));
+
+            cout << "\nProjeto cadastrado com sucesso!\n\n";
+            Sleep(1000);  
+        } else {
+            cout << "\nFuncionário não encontrado.\n\n";
+        }
     }
+    
 }
 
 void ExcluiFuncionario(TListaEncadeada *listaE) {
     TFuncionario fun;
     TApontador x = listaE->Primeiro;
-    int cont = 0;
+    int cont = 0, ret_proj;
 
-    while (x->prox != NULL) {
-        
-        //COMPARAR SE TEM PROJETO
-          
+    while(x->prox != NULL){
+
+        ret_proj = QuantidadeProjetos(x->prox->item.projetos);
+
+        if(ret_proj == 0){
             ApagaFuncionario(x, listaE, &fun);
             cont++;
-        
+        } else {
+            x = x->prox;
+        }    
+
     }
     system("cls");
     cout << "*******************************************\n";
@@ -200,10 +227,10 @@ void ExcluiFuncionario(TListaEncadeada *listaE) {
     system("cls");
 }
 
-void ApagaFuncionario(TApontador x, TListaEncadeada *listaE, TFuncionario *fun) {
+void ApagaFuncionario(TApontador x, TListaEncadeada *listaE, TFuncionario *fun){
     TApontador q;
 
-    if ((VerificaListaVaziaE(*listaE)) || (x == NULL) || (x->prox == NULL)) {
+    if((VerificaListaVaziaE(*listaE)) || (x == NULL) || (x->prox == NULL)){
         cout << "Erro. Lista vazia";
     } else {
         q = x->prox;
@@ -216,3 +243,46 @@ void ApagaFuncionario(TApontador x, TListaEncadeada *listaE, TFuncionario *fun) 
     }
 }
 
+void DadosFuncionario(TChave cod, TListaEncadeada *listaE){
+    TApontador p;
+    int ret;
+
+    ret = Pesquisa(cod, *listaE, &p); //pesquisa para saber qual o funcionario
+
+    //exibe os dados do funcionario e seus projetos
+    if(ret == 1) { 
+        cout << "*******************************************\n";
+        cout << "*        DADOS DO FUNCIONÁRIO          *\n";
+        cout << "*******************************************\n\n";
+        cout << "Código: " << p->prox->item.numero << "\n";
+        cout << "Nome: " << p->prox->item.nome << "\n";
+        cout << "Endereço: " << p->prox->item.endereco << "\n";
+        cout << "Dependentes: " << p->prox->item.dependentes << endl;
+        
+        cout << "\nPROJETOS do funcionario:\n";  
+        ImprimeProjetos(p->prox->item.projetos); //imprimo a lista de projetos do funcionario
+
+    } else {
+        cout << "\nFuncionário não encontrado.\n\n";
+    }
+
+    system("pause");
+}
+
+void ImprimeProjetos(TListaSequencial listaS) {
+    for (int i = 0; i < listaS.ultimo; i++){
+	    cout << "\nCódigo do Projeto: " << listaS.item[i].codigo;
+	    cout << "\nNome do Projeto: " << listaS.item[i].nome;
+	    cout << "\nHoras Trabalhadas: " << listaS.item[i].horas << "\n";
+    }
+}
+
+int QuantidadeProjetos(TListaSequencial listaS){
+    int contador = 0;
+    for(int i = 0; i < listaS.ultimo; i++){
+        if(listaS.item[i].codigo != NULL && listaS.item[i].nome != NULL && listaS.item[i].horas != NULL){
+            contador++;
+        }
+    }
+    return contador;
+}

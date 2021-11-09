@@ -14,10 +14,8 @@ int main()
   
   TListaEncadeada listaE;
   TListaSequencial listaS;
-  
   CriaListaVaziaEncadeada(&listaE);
-  CriaListaVaziaSequencial(listaS);
-
+  
   int opcao;
 
   do
@@ -40,7 +38,7 @@ int main()
             ExcluiFuncionario(&listaE);
             break;
         case 5:
-            ConsultaFuncionario(&listaE, listaS);
+            ConsultaFuncionario(&listaE);
             break;
         case 6:
             //função
