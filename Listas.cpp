@@ -63,7 +63,7 @@ void InsereSequencial(TProjeto proj, TListaSequencial &listaS){
     if(listaS.ultimo == MAXTAM){
         cout << "Lista Cheia!\n";
         Sleep(1000);
-    }else{
+    } else {
         listaS.item[listaS.ultimo] = proj;
         listaS.ultimo++;
     }
@@ -96,13 +96,13 @@ void CadastraFuncionario(TListaEncadeada *listaE){
 int Pesquisa(TChave cod, TListaEncadeada listaE, TApontador *p){
     TApontador aux = listaE.Primeiro;
     while(aux->prox != NULL){
-        if(aux->prox->item.numero == cod){
-            *p = aux;
-            return 1;
-        }else{
-            aux = aux->prox;
-            *p = aux;
-        }
+      if(aux->prox->item.numero == cod){
+          *p = aux;
+          return 1;
+      } else {
+        aux = aux->prox;
+        *p = aux;
+      }
     }
     return 0;
 }
@@ -132,7 +132,7 @@ void ConsultaFuncionario(TListaEncadeada *listaE, TListaSequencial listaS){
             cout << "Projeto nome: " << p->prox->item.projetos.item[i].nome << "\n";
             cout << "Horas trabalhadas: " << p->prox->item.projetos.item[i].horas << "\n";
         }
-    }else{
+    } else{
         cout << "\nFuncionário não encontrado.\n\n";
     }
 

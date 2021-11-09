@@ -9,33 +9,33 @@ typedef int TChave;
 typedef struct TCelula_str *TApontador;
 
 typedef struct{
-    TChave codigo; // codigo do projeto
-    char nome[30]; // nome do projeto
-    int horas;     // numero de horas trabalhadas no projeto
+  TChave codigo; // codigo do projeto
+  char nome[30]; // nome do projeto
+  int horas;     // numero de horas trabalhadas no projeto
 } TProjeto;
 
 typedef struct{
-    TProjeto item[MAXTAM];
-    int primeiro;
-    int ultimo;
+  TProjeto item[MAXTAM];
+  int primeiro;
+  int ultimo;
 } TListaSequencial;
 
 typedef struct{
-    TChave numero;             // codigo do funcionario
-    char nome[40];             // nome do funcionario
-    char endereco[40];         // endereco do funcionario
-    int dependentes;           // numero de dependentes do funcionario
-    TListaSequencial projetos; // Lista Sequencial que guarda os projetos nos quais o funcionario trabalha
+  TChave numero;             // codigo do funcionario
+  char nome[40];             // nome do funcionario
+  char endereco[40];         // endereco do funcionario
+  int dependentes;           // numero de dependentes do funcionario
+  TListaSequencial projetos; // Lista Sequencial que guarda os projetos nos quais o funcionario trabalha
 } TFuncionario;
 
 typedef struct TCelula_str{
-    TFuncionario item;
-    TApontador prox;
+  TFuncionario item;
+  TApontador prox;
 } TCelula;
 
 typedef struct{
-    TApontador Primeiro;
-    TApontador Ultimo;
+  TApontador Primeiro;
+  TApontador Ultimo;
 } TListaEncadeada;
 
 void menu(); //menu do programa
