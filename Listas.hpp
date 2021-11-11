@@ -49,21 +49,29 @@ void menu(); //menu do programa
 void CriaListaVaziaEncadeada(TListaEncadeada *listaE);
 void InsereEncadeada(TFuncionario fun, TListaEncadeada *listaE);
 int VerificaListaVaziaE(TListaEncadeada listaE); 
-int Pesquisa(TChave cod, TListaEncadeada listaE, TApontador *p);
+int PesquisaEncadeada(TChave cod, TListaEncadeada listaE, TApontador *p);
 
 //TADS Lista Sequencial
 void CriaListaVaziaSequencial(TListaSequencial *listaS); 
 void InsereSequencial(TProjeto proj, TListaSequencial *listaS);
 int VerificaListaVaziaS(TListaSequencial listaS);
+int PesquisaSequencial(TListaSequencial *listaS, TChave cod);
 
 //ações 
 void CadastraFuncionario(TListaEncadeada *listaE); //cadastro de funcionarios
 void ConsultaFuncionario(TListaEncadeada *listaE);  //consulta de funcionarios
-void DadosFuncionario(TChave cod, TListaEncadeada *listaE); //dados do funcionario
 void ExcluiFuncionario(TListaEncadeada *listaE); //exclui funcionarios
 void ApagaFuncionario(TApontador x, TListaEncadeada *listaE, TFuncionario *fun); //apaga funcionario
 void CadastraProjetos(TListaEncadeada *listaE); //cadastro de projetos
-void ImprimeProjetos(TListaSequencial listaS); //imprimi projeto 
-int QuantidadeProjetos(TListaSequencial listaS); //quantidade de projetos na lista 
+void ExcluiProjetos(TListaEncadeada *listaE); //exclui projetos
+void ApagaProjeto(TApontador p, TListaSequencial *listaS, TChave cod, TProjeto *proj); //apaga projeto
+void ImprimiContraCheque(TListaEncadeada *listaE); //imprimi contra-cheque
+
+//funções extras 
+int CalculaHorasSemanais(TListaSequencial listaS); //calcula as horas semanais
+float CalculaSalarioBruto(int totHoras, TApontador x); //calcula o salario bruto
+void DadosFuncionario(TChave cod, TListaEncadeada *listaE); //dados do funcionario
+void ImprimeProjetos(TListaSequencial listaS); //imprime projetos
+int QuantidadeProjetos(TListaSequencial listaS); //quantidade de projetos de um funcionario 
 
 #endif

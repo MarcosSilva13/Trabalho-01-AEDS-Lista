@@ -8,23 +8,43 @@ using namespace std;
 
 int main()
 {
-  UINT CPAGE_UTF8 = 65001;
-  UINT CPAGE_DEFAULT = GetConsoleOutputCP();
-  SetConsoleOutputCP(CPAGE_UTF8);
-  
-  TListaEncadeada listaE;
-  TListaSequencial listaS;
-  CriaListaVaziaEncadeada(&listaE);
-  
-  int opcao;
+    UINT CPAGE_UTF8 = 65001;
+    UINT CPAGE_DEFAULT = GetConsoleOutputCP();
+    SetConsoleOutputCP(CPAGE_UTF8);
 
-  do
-  {
-    menu();
-    cout << "Escolha a opção: ";
-    cin >> opcao;
-    system("cls");
-    switch(opcao) {
+    TListaEncadeada listaE;
+    TListaSequencial listaS;
+    CriaListaVaziaEncadeada(&listaE);
+
+    //Lendo do arquivo
+    FILE *arquivo;
+    TFuncionario fun;
+    TApontador y = listaE.Primeiro;
+    arquivo = fopen("funcionarios.bin", "rb");
+    if (arquivo != NULL)
+    {
+        while (fread(&fun, sizeof(TFuncionario), 1, arquivo))
+        {
+            InsereEncadeada(fun, &listaE);
+        }
+        fclose(arquivo);
+    }
+    else
+    {
+        cout << "Arquivo vazio!!";
+        system("pause");
+    }
+
+    int opcao;
+
+    do
+    {
+        menu();
+        cout << "Escolha a opção: ";
+        cin >> opcao;
+        system("cls");
+        switch (opcao)
+        {
         case 1:
             CadastraFuncionario(&listaE);
             break;
@@ -32,7 +52,7 @@ int main()
             CadastraProjetos(&listaE);
             break;
         case 3:
-            //função
+            ExcluiProjetos(&listaE);
             break;
         case 4:
             ExcluiFuncionario(&listaE);
@@ -41,12 +61,25 @@ int main()
             ConsultaFuncionario(&listaE);
             break;
         case 6:
-            //função
+            ImprimiContraCheque(&listaE);
+            system("pause");
+            system("cls");
             break;
+        }
+    } while (opcao != 7);
+
+    //Gravando no arquivo
+    arquivo = fopen("funcionarios.bin", "wb");
+
+    while (y->prox != NULL)
+    {
+        fun = y->prox->item;
+        fwrite(&fun, sizeof(TFuncionario), 1, arquivo);
+        y = y->prox;
     }
-  } while (opcao != 7);
 
-  system("pause");
-  return 0;
+    fclose(arquivo);
+
+    system("pause");
+    return 0;
 }
-
