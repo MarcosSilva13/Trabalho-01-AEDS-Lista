@@ -20,6 +20,7 @@ int main()
     FILE *arquivo;
     TFuncionario fun;
     TApontador y = listaE.Primeiro;
+    
     arquivo = fopen("funcionarios.bin", "rb");
     if (arquivo != NULL)
     {
